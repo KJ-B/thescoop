@@ -2,10 +2,15 @@
 let database = {
   users: {},
   articles: {},
-  nextArticleId: 1
+  nextArticleId: 1,
+  comments: {},
+  nextCommentId: 1
 };
 
+
+
 const routes = {
+
   '/users': {
     'POST': getOrCreateUser
   },
@@ -21,12 +26,31 @@ const routes = {
     'PUT': updateArticle,
     'DELETE': deleteArticle
   },
+
+  '/comments': {
+    'POST': createComment
+  },
+
+  '/comments/:id': {
+
+  },
+
+  '/comments/:id/upvote': {
+  },
+
+  '/comments/:id/downvote': {
+  },
+
   '/articles/:id/upvote': {
     'PUT': upvoteArticle
   },
   '/articles/:id/downvote': {
     'PUT': downvoteArticle
   }
+};
+
+function createComment(url, request) {
+
 };
 
 function getUser(url, request) {
