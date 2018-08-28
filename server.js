@@ -50,7 +50,7 @@ const routes = {
 };
 
 function createComment(url, request) {
-
+  const comments = request.body && request.body.comment;
 };
 
 function getUser(url, request) {
