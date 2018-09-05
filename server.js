@@ -44,17 +44,19 @@ const routes = {
   '/articles/:id/upvote': {
     'PUT': upvoteArticle
   },
+
   '/articles/:id/downvote': {
     'PUT': downvoteArticle
   }
 };
 
 function createComment(url, request) {
-  const requestComment = request.body && request.body.article;
+  const requestComment = request.body && request.body.comment;
   const response = {};
 
   if (requestComment && requestComment.body && requestComment.articleId &&
-      requestComment.username && database.users[requestComment.username]) {
+      requestComment.username && database.users[requestComment.username] &&
+      database.articles[requestComment.articleId]) {
     const comment = {
       id: database.nextCommentId++,
       body: requestComment.body,
@@ -67,6 +69,7 @@ function createComment(url, request) {
 
     database.comments[comment.id] = comment;
     database.users[comment.username].commentIds.push(comment.id);
+    database.articles[comment.articleId].commentIds.push(comment.id);
 
     response.body = {comment: comment};
     response.status = 201;
@@ -79,7 +82,7 @@ function createComment(url, request) {
 
 function updateComment(url, request) {
   const id = Number(url.split('/').filter(segment => segment)[1]);
-  const savedComment = database.comment[id];
+  const savedComment = database.comments[id];
   const requestComment = request.body && request.body.comment;
   const response = {};
 
