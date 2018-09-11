@@ -7,6 +7,35 @@ let database = {
   nextCommentId: 1
 };
 
+yaml = require('js-yaml');
+fs   = require('fs');
+
+function loadDatabase() {
+  fs.readFile("database.yaml", function(err, buf) {
+    if (err) {
+      if (err.message.startsWith("ENOENT: no such file")) {
+        console.log("(New database)");
+      } else {
+        console.log(`Failed to load database: ${err}`);
+      }
+    } else {
+      let readFile = buf.toString();
+      database = yaml.load(readFile);
+      console.log(database);
+      return database;
+    }
+  });
+};
+
+function saveDatabase() {
+  fs.writeFile("database.yaml", yaml.dump(database), function(err, database) {
+    if (err) {
+      console.log(`Error writing to database: ${err}`);
+    } else {
+      console.log("Database updated and saved!");
+    }
+  });
+};
 
 
 const routes = {
